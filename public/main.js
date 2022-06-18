@@ -1,10 +1,28 @@
-console.log('我是main.js 1')
-getJSON.onclick = ()=> {
+// console.log('我是main.js 1')
+let n = 1
+getPage.onclick = () => {
     const request = new XMLHttpRequest()
-    request.open("get","/5.json")
-    request.onreadystatechange = ()=>{
-        if(request.readyState === 4 && request.status >= 200 && request.status < 300) {
-            console.log(typeof request.response)//得到字符串
+    request.open('GET', `/db/page${n+1}.json`)
+    request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status >= 200 && request.status < 300) {
+            // console.log(request.response)
+            const array = JSON.parse(request.response)
+            array.forEach(item => {
+                const li = document.createElement('li')
+                li.textContent = item.id
+                xxx.appendChild(li)
+            });
+            n += 1
+        }
+    }
+    request.send()
+}
+getJSON.onclick = () => {
+    const request = new XMLHttpRequest()
+    request.open("get", "/5.json")
+    request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status >= 200 && request.status < 300) {
+            console.log(typeof request.response) //得到字符串
             console.log(request.response)
             // 把符合JSON语法的字符串转换成JS对应类型的数据
             const bool = JSON.parse(request.response)
@@ -14,20 +32,22 @@ getJSON.onclick = ()=> {
     }
     request.send()
 }
-let object 
+let object
 try {
     object = JSON.parse(`{'name':'frank}`)
 } catch (error) {
     console.log('出错了，错误详情是')
-    console.log(error) 
-    object = {'name': 'no name'}
+    console.log(error)
+    object = {
+        'name': 'no name'
+    }
 }
 console.log(object)
-getXML.onclick = ()=>{
+getXML.onclick = () => {
     const request = new XMLHttpRequest()
-    request.open('GET','/4.xml')
-    request.onreadystatechange = ()=>{
-        if(request.readyState === 4 && request.status >= 200 && request.status < 300) {
+    request.open('GET', '/4.xml')
+    request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status >= 200 && request.status < 300) {
             const dom = request.responseXML
             const text = dom.getElementsByTagName('warning')[0].textContent
             console.log(text.trim())
